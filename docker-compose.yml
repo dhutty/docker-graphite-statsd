@@ -3,9 +3,22 @@ version: "2"
 services:
   statsd:
    image: graphiteapp/graphite-statsd
+   volumes:
+    - ./graphite_storage:/opt/graphite/storage
    ports:
     - "80:80"
     - "2003-2004:2003-2004"
     - "2023-2024:2023-2024"
     - "8125:8125/udp"
     - "8126:8126"
+  grafana:
+    image: grafana/grafana
+    restart: always
+    user: "1000"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
